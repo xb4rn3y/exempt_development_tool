@@ -14,8 +14,8 @@ The tool helps residents quickly determine whether a proposed shed or patio qual
 - Responsive UI (mobile, tablet, desktop)  
 
 ## 🛠️ Tech Stack
-- **Frontend:** 
-- **Deployment:**  
+- **Frontend:** React
+- **Deployment:**  SupaBase
 - **Version Control:** GitHub  
 
 ## ⚠️ Disclaimer
