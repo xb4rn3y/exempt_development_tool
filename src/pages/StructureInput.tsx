@@ -17,6 +17,7 @@ interface FormData {
   frontBoundary: string;
   sideBoundary: string;
   rearBoundary: string;
+  additionalRequirements: Record<string, boolean>;
 }
 
 const StructureInput = () => {
@@ -30,14 +31,25 @@ const StructureInput = () => {
     height: "",
     frontBoundary: "",
     sideBoundary: "",
-    rearBoundary: ""
+    rearBoundary: "",
+    additionalRequirements: {}
   });
 
-  const totalSteps = 2;
+  const totalSteps = 3;
   const progress = (currentStep / totalSteps) * 100;
 
   const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleRequirementChange = (requirement: string, value: boolean) => {
+    setFormData(prev => ({
+      ...prev,
+      additionalRequirements: {
+        ...prev.additionalRequirements,
+        [requirement]: value
+      }
+    }));
   };
 
   const handleNext = () => {
@@ -51,6 +63,9 @@ const StructureInput = () => {
     if (currentStep > 1) {
       setCurrentStep(prev => prev - 1);
       console.log('Moving to step:', currentStep - 1);
+    } else {
+      // Go back to Properties page when on step 1
+      navigate('/properties');
     }
   };
 
@@ -60,12 +75,71 @@ const StructureInput = () => {
     });
   };
 
+  const getRequirementsForStructure = (structureType: string) => {
+    switch (structureType) {
+      case 'shed':
+        return [
+          { key: 'isShippingContainer', label: 'Will your structure be a shipping container?', correctAnswer: false },
+          { key: 'roofwaterDrains', label: 'Will roofwater drain without causing nuisance to neighbours?', correctAnswer: true },
+          { key: 'isMetal', label: 'Will your structure be made of metal?', correctAnswer: null, conditional: true },
+          { key: 'lowReflectiveMaterials', label: 'Will you use low-reflective, factory-coloured materials?', correctAnswer: true, dependsOn: 'isMetal', showIf: true },
+          { key: 'inBushfireArea', label: 'Will your structure be in a bushfire area?', correctAnswer: null, conditional: true },
+          { key: 'nearDwelling', label: 'Will your structure be less than 5m from a dwelling?', correctAnswer: false, dependsOn: 'inBushfireArea', showIf: true, conditional: true },
+          { key: 'isNonCombustible', label: 'Will your structure be made of non-combustible materials?', correctAnswer: true, dependsOn: 'inBushfireArea', showIf: true },
+          { key: 'inHeritageArea', label: 'Will your property be in a heritage area?', correctAnswer: null, conditional: true },
+          { key: 'inRearYard', label: 'Will your structure be in the rear yard?', correctAnswer: true, dependsOn: 'inHeritageArea', showIf: true },
+          { key: 'blocksAccess', label: 'Will your structure block entry, exit, or fire safety measures of nearby buildings?', correctAnswer: false },
+          { key: 'clearOfEasements', label: 'Will your structure be at least 1m clear of registered easements?', correctAnswer: true }
+        ];
+      case 'patio':
+        return [
+          { key: 'enclosingWallHeight', label: 'Will your patio have an enclosing wall higher than 1.4m?', correctAnswer: false },
+          { key: 'floorHeight', label: 'Will the floor height be more than 1m above ground level?', correctAnswer: false },
+          { key: 'isRoofed', label: 'Will your patio/pergola be roofed?', correctAnswer: null, conditional: true },
+          { key: 'roofOverhang', label: 'Will the roof overhang be 600mm or less on each side?', correctAnswer: true, dependsOn: 'isRoofed', showIf: true },
+          { key: 'attachedToDwelling', label: 'Will your patio/pergola be attached to a dwelling?', correctAnswer: null, conditional: true, dependsOn: 'isRoofed', showIf: true },
+          { key: 'extendsAboveGutter', label: 'Will it extend above the gutter line?', correctAnswer: false, dependsOn: 'attachedToDwelling', showIf: true },
+          { key: 'stormwaterConnection', label: 'Will roofwater connect to the stormwater drainage system?', correctAnswer: true, dependsOn: 'isRoofed', showIf: true },
+          { key: 'isMetal', label: 'Will your patio/pergola be made of metal?', correctAnswer: null, conditional: true },
+          { key: 'lowReflectiveMaterials', label: 'Will you use low-reflective, factory-coloured materials?', correctAnswer: true, dependsOn: 'isMetal', showIf: true },
+          { key: 'isFasciaConnected', label: 'Will your patio/pergola be fascia-connected?', correctAnswer: null, conditional: true },
+          { key: 'followsEngineerSpecs', label: 'Will it follow engineer\'s specifications?', correctAnswer: true, dependsOn: 'isFasciaConnected', showIf: true },
+          { key: 'obstructsDrainage', label: 'Will your structure obstruct existing drainage paths?', correctAnswer: false },
+          { key: 'inBushfireArea', label: 'Will your structure be in a bushfire area?', correctAnswer: null, conditional: true },
+          { key: 'nearDwelling', label: 'Will your structure be less than 5m from a dwelling?', correctAnswer: false, dependsOn: 'inBushfireArea', showIf: true, conditional: true },
+          { key: 'isNonCombustible', label: 'Will your structure be made of non-combustible materials?', correctAnswer: true, dependsOn: 'inBushfireArea', showIf: true }
+        ];
+      case 'carport':
+        return [
+          { key: 'isMetal', label: 'Will your carport be made of metal?', correctAnswer: null, conditional: true },
+          { key: 'lowReflectiveMaterials', label: 'Will you use low-reflective, factory-coloured materials?', correctAnswer: true, dependsOn: 'isMetal', showIf: true },
+          { key: 'newDriveway', label: 'Will you be creating a new driveway or gutter crossing?', correctAnswer: null, conditional: true },
+          { key: 'hasRoadApproval', label: 'Will you have approval from the road authority?', correctAnswer: true, dependsOn: 'newDriveway', showIf: true },
+          { key: 'stormwaterConnection', label: 'Will roofwater connect to the stormwater drainage system?', correctAnswer: true },
+          { key: 'reducesAccess', label: 'Will your carport reduce or block vehicle access, parking, or loading?', correctAnswer: false }
+        ];
+      default:
+        return [];
+    }
+  };
+
   const isStepValid = () => {
     switch (currentStep) {
       case 1:
         return formData.structureType && formData.length && formData.width && formData.height;
       case 2:
         return formData.frontBoundary && formData.sideBoundary && formData.rearBoundary;
+      case 3:
+        const requirements = getRequirementsForStructure(formData.structureType);
+        return requirements.every(req => {
+          if (req.dependsOn) {
+            const parentAnswer = formData.additionalRequirements[req.dependsOn];
+            if (parentAnswer !== req.showIf) {
+              return true; // Not applicable, so considered valid
+            }
+          }
+          return formData.additionalRequirements[req.key] !== undefined;
+        });
       default:
         return false;
     }
@@ -85,12 +159,9 @@ const StructureInput = () => {
                   <SelectValue placeholder="Select structure type" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="shed">Garden Shed</SelectItem>
+                  <SelectItem value="shed">Shed</SelectItem>
                   <SelectItem value="patio">Patio/Pergola</SelectItem>
                   <SelectItem value="carport">Carport</SelectItem>
-                  <SelectItem value="garage">Garage</SelectItem>
-                  <SelectItem value="pool-house">Pool House</SelectItem>
-                  <SelectItem value="deck">Deck/Verandah</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -193,6 +264,56 @@ const StructureInput = () => {
           </div>
         );
 
+      case 3:
+        const requirements = getRequirementsForStructure(formData.structureType);
+        return (
+          <div className="space-y-6 animate-slide-up">
+            <div className="text-center mb-6">
+              <h3 className="text-xl font-semibold mb-2">Additional Requirements</h3>
+              <p className="text-muted-foreground">
+                Please confirm your structure meets these additional requirements for exempt development
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              {requirements.map((requirement) => {
+                // Check if this question should be shown based on dependencies
+                if (requirement.dependsOn) {
+                  const parentAnswer = formData.additionalRequirements[requirement.dependsOn];
+                  console.log(`Checking requirement ${requirement.key}: dependsOn=${requirement.dependsOn}, parentAnswer=${parentAnswer}, showIf=${requirement.showIf}`);
+                  if (parentAnswer !== requirement.showIf) {
+                    console.log(`Not showing ${requirement.key} because parent condition not met`);
+                    return null; // Don't show this question
+                  }
+                }
+
+                return (
+                  <div key={requirement.key} className="p-4 border rounded-lg space-y-3">
+                    <p className="text-sm font-medium">{requirement.label}</p>
+                    <div className="flex gap-4">
+                      <Button
+                        variant={formData.additionalRequirements[requirement.key] === true ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => handleRequirementChange(requirement.key, true)}
+                      >
+                        <Check className="mr-2 h-4 w-4" />
+                        Yes
+                      </Button>
+                      <Button
+                        variant={formData.additionalRequirements[requirement.key] === false ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => handleRequirementChange(requirement.key, false)}
+                      >
+                        ✕ No
+                      </Button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        );
+
       default:
         return null;
     }
@@ -275,10 +396,12 @@ const StructureInput = () => {
               <Calculator className="mr-2 h-5 w-5 text-primary" />
               {currentStep === 1 && "Basic Information"}
               {currentStep === 2 && "Boundary Setbacks"}
+              {currentStep === 3 && "Additional Requirements"}
             </CardTitle>
             <CardDescription>
               {currentStep === 1 && "Tell us about the type and size of your proposed structure"}
               {currentStep === 2 && "Boundary distances are critical for exempt development eligibility"}
+              {currentStep === 3 && "These requirements must be met for exempt development eligibility"}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -291,7 +414,6 @@ const StructureInput = () => {
           <Button
             variant="outline"
             onClick={handlePrevious}
-            disabled={currentStep === 1}
           >
             Previous
           </Button>
