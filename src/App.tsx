@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navigation from "./components/Navigation";
 import Index from "./pages/Index";
+import ZoneCheck from "./pages/ZoneCheck";
 import Properties from "./pages/Properties";
 import StructureInput from "./pages/StructureInput";
 import Results from "./pages/Results";
@@ -23,6 +24,7 @@ const App = () => (
         <Navigation />
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/zone-check" element={<ZoneCheck />} />
           <Route path="/properties" element={<Properties />} />
           <Route path="/structure/:propertyId" element={<StructureInput />} />
           <Route path="/results/:propertyId" element={<Results />} />
