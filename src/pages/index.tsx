@@ -49,7 +49,7 @@ const Index = () => {
               <Button
                 variant="secondary"
                 size="lg"
-                onClick={() => navigate('/properties')}
+                onClick={() => navigate('/zone-check')}
                 className="text-lg px-8 py-4 bg-white text-primary hover:bg-white/90 shadow-lg hover:shadow-xl transition-all duration-300"
               >
                 <FileText className="mr-2 h-5 w-5" />
@@ -181,7 +181,7 @@ const Index = () => {
             <Button
               variant="hero"
               size="lg"
-              onClick={() => navigate('/properties')}
+              onClick={() => navigate('/zone-check')}
               className="text-lg px-8 py-4"
             >
               <Building2 className="mr-2 h-5 w-5" />
