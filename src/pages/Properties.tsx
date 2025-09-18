@@ -17,99 +17,35 @@ interface Property {
 const sampleProperties: Property[] = [
   {
     id: "1",
-    address: "Urban Lot - Small (300m²)",
+    address: "Urban Standard Lot (> 300m²)",
     type: "Residential",
-    zone: "R1 General Residential",
-    description: "Typical inner-city residential lot",
+    zone: "R1 / R2 / R3 / R4",
+    description: "Standard urban residential lot greater than 300m²",
     icon: <Home className="h-6 w-6" />
   },
   {
-    id: "2", 
-    address: "Urban Lot - Medium (500m²)",
+    id: "2",
+    address: "Rural/Large Lot Residential (> 300m²)",
     type: "Residential",
-    zone: "R2 Low Density Residential", 
-    description: "Standard suburban residential lot",
-    icon: <Home className="h-6 w-6" />
+    zone: "R5 / RU1 / RU2 / RU3 / RU4 / RU5 / RU6",
+    description: "Large lot residential or rural property greater than 300m²",
+    icon: <Building className="h-6 w-6" />
   },
   {
     id: "3",
-    address: "Urban Lot - Large (800m²)",
+    address: "Small Lots (< 300m²) - Residential",
     type: "Residential",
-    zone: "R2 Low Density Residential",
-    description: "Large suburban residential lot",
+    zone: "R1 / R2 / R3 / R4",
+    description: "Small residential lot less than 300m²",
     icon: <Home className="h-6 w-6" />
   },
   {
     id: "4",
-    address: "Rural Block - Small (1200m²)",
-    type: "Residential",
-    zone: "R5 Large Lot Residential",
-    description: "Small rural residential block",
-    icon: <Building className="h-6 w-6" />
-  },
-  {
-    id: "5",
-    address: "Rural Block - Med (2000m²)",
-    type: "Residential",
-    zone: "RU5 Village",
-    description: "Medium rural residential block",
-    icon: <Building className="h-6 w-6" />
-  },
-  {
-    id: "6",
-    address: "Rural Block - Large (5000m²)",
-    type: "Residential",
-    zone: "RU1 Primary Production",
-    description: "Large rural residential block",
-    icon: <Building className="h-6 w-6" />
-  },
-  {
-    id: "7",
-    address: "Urban Corner Lot (600m²)",
-    type: "Residential",
-    zone: "R2 Low Density Residential",
-    description: "Corner lot in suburban area",
-    icon: <MapPin className="h-6 w-6" />
-  },
-  {
-    id: "8",
-    address: "Urban Compact (250m²)",
-    type: "Residential",
-    zone: "R3 Medium Density Residential",
-    description: "Compact urban dwelling lot",
-    icon: <Home className="h-6 w-6" />
-  },
-  {
-    id: "9",
-    address: "Rural Acreage (1 hectare)",
-    type: "Residential",
-    zone: "RU1 Primary Production",
-    description: "Small acreage property",
-    icon: <Building className="h-6 w-6" />
-  },
-  {
-    id: "10",
-    address: "Urban Duplex Site (400m²)",
-    type: "Residential",
-    zone: "R3 Medium Density Residential",
-    description: "Duplex development site",
-    icon: <Building className="h-6 w-6" />
-  },
-  {
-    id: "11",
-    address: "Rural Farmlet (2 hectares)",
+    address: "Small Lots (< 300m²) - Rural",
     type: "Rural",
-    zone: "RU1 Primary Production",
-    description: "Small farming property",
-    icon: <Building className="h-6 w-6" />
-  },
-  {
-    id: "12",
-    address: "Urban Townhouse (350m²)",
-    type: "Residential",
-    zone: "R4 High Density Residential",
-    description: "Townhouse development lot",
-    icon: <Home className="h-6 w-6" />
+    zone: "R5 / RU1 / RU2 / RU3 / RU4 / RU5 / RU6",
+    description: "Small rural lot less than 300m²",
+    icon: <MapPin className="h-6 w-6" />
   }
 ];
 
@@ -139,7 +75,7 @@ const Properties = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 max-w-4xl mx-auto">
           {sampleProperties.map((property, index) => (
             <Card
               key={property.id}
@@ -164,11 +100,6 @@ const Properties = () => {
                       </CardDescription>
                     </div>
                   </div>
-                  {selectedProperty === property.id && (
-                    <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
-                      <div className="w-3 h-3 bg-primary-foreground rounded-full"></div>
-                    </div>
-                  )}
                 </div>
               </CardHeader>
               <CardContent>
