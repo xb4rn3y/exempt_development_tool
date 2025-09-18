@@ -33,12 +33,12 @@ const FAQ = () => {
           answer: "State Environmental Planning Policy (SEPP) is NSW state-level planning legislation that sets rules for development across the state, including provisions for exempt and complying development."
         },
         {
-          question: "What is LEP?",
-          answer: "Local Environmental Plan (LEP) is Council's main planning document that sets out zoning, development standards, and environmental protection measures for the local area."
+          question: "What is a Building Line?",
+          answer: " A building line is an invisible line at the front of your property that buildings must stay behind. Usually matches the front wall of your house. "
         },
         {
-          question: "What is DCP?",
-          answer: "Development Control Plan (DCP) provides detailed planning and design guidelines that supplement the LEP, covering matters like building design, landscaping, and parking."
+          question: "What is Residential Zoning?",
+          answer: "A local government regulation that divides an area into specific zones where only residential buildings and activities are permitted, such as single-family homes, apartments, and townhouses."
         },
         {
           question: "What are setbacks?",
@@ -60,11 +60,35 @@ const FAQ = () => {
         },
         {
           question: "How close can I build to my boundary?",
-          answer: "Minimum setbacks typically include: 6m from front boundary, 0.9m from side boundaries, and 0.9m from rear boundary. Requirements may vary based on structure type and size."
+          answer: "Minimum setbacks typically include: 0.9m from front, side, and rear boundaries in residential zones and 5m in rural zones. Requirements may vary based on structure type and size."
         },
         {
           question: "Are there size limitations?",
           answer: "Yes, exempt development typically has maximum floor area limits. For example, sheds are often limited to 20m² floor area, while patios may have different limits."
+        },
+        {
+          question: "How do I know if I am in a heritage, bushfire or flood zone?",
+          answer: (
+            <>
+              You can check if your property is in a heritage, bushfire, or flood zone by using the{' '}
+              <a 
+                href="https://www.planningportal.nsw.gov.au/spatialviewer/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-primary hover:underline"
+              >
+                NSW Planning Portal Spatial Viewer
+              </a>. For bushfire prone land specifically, you can also use the{' '}
+              <a 
+                href="https://www.rfs.nsw.gov.au/plan-and-prepare/building-on-bush-fire-prone-land/bush-fire-prone-land/check-bfpl" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-primary hover:underline"
+              >
+                NSW Rural Fire Service Mapping Tool
+              </a>. Enter your address and check the relevant overlay maps for heritage conservation areas, bushfire prone land, and flood planning areas. You can also contact Albury City Council for specific information about your property.
+            </>
+          )
         }
       ]
     },
@@ -74,7 +98,20 @@ const FAQ = () => {
       items: [
         {
           question: "What if my development isn't exempt?",
-          answer: "If your proposed development doesn't qualify as exempt, you'll need to submit a development application (DA) to Council. This involves detailed plans, fees, and an assessment period of 40-60 days."
+          answer: (
+            <>
+              If your proposed development doesn't qualify as exempt, you'll need to submit a development application (DA) to Council. For more information visit the Albury{' '}
+              <a 
+                href="https://www.alburycity.nsw.gov.au/property/develop/application-guide/what-approval-do-i-need/development-applications" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-primary hover:underline"
+              >
+                Development Application
+              </a>{' '}
+              Website.
+            </>
+          )
         },
         {
           question: "Do I need building approval for exempt development?",
@@ -154,7 +191,7 @@ const FAQ = () => {
               <div className="space-y-2">
                 <h4 className="font-semibold">Planning Department</h4>
                 <p>Phone: (02) 6023 8111</p>
-                <p>Email: council@alburycity.nsw.gov.au</p>
+                <p>Email: info@alburycity.nsw.gov.au</p>
               </div>
               <div className="space-y-2">
                 <h4 className="font-semibold">Office Hours</h4>
